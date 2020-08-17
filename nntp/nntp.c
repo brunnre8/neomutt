@@ -110,6 +110,33 @@ struct ChildCtx
 };
 
 /**
+ * nntp_authenticators - Accepted authentication methods
+ */
+static const char *const nntp_authenticators[] = {
+  "user", "anonymous", "cram-md5", "gssapi", "sasl",
+};
+
+/**
+ * nntp_auth_is_valid - Check if string is a valid nntp authentication method
+ * @param authenticator Authenticator string to check
+ * @retval bool True if argument is a valid auth method
+ *
+ * Validate whether an input string is an accepted nntp authentication method as
+ * defined by nntp_authenticators.
+ */
+bool nntp_auth_is_valid(const char *authenticator)
+{
+  for (size_t i = 0; i < mutt_array_size(nntp_authenticators); i++)
+  {
+    const char *auth = nntp_authenticators[i];
+    if (mutt_istr_equal(auth, authenticator))
+      return true;
+  }
+
+  return false;
+}
+
+/**
  * nntp_adata_free - Free the private Account data - Implements Account::adata_free()
  *
  * The NntpAccountData struct stores global NNTP data, such as the connection to

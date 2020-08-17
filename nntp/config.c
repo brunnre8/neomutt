@@ -55,6 +55,33 @@ bool          C_ShowOnlyUnread;      ///< Config: (nntp) Only show subscribed ne
 bool          C_XCommentTo;          ///< Config: (nntp) Add 'X-Comment-To' header that contains article author
 // clang-format on
 
+/**
+ * nntp_auth_validator - Validate the "nntp_authenticators" config variable - Implements ConfigDef::validator()
+ */
+static int nntp_auth_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                               intptr_t value, struct Buffer *err)
+{
+  const struct Slist *nntp_auth_methods = (const struct Slist *) value;
+  if (!nntp_auth_methods || (nntp_auth_methods->count == 0))
+    return CSR_SUCCESS;
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &nntp_auth_methods->head, entries)
+  {
+    if (nntp_auth_is_valid(np->data))
+      continue;
+#ifdef USE_SASL
+    if (sasl_auth_validator(np->data))
+      continue;
+#endif
+    mutt_buffer_printf(err, _("Option %s: %s is not a valid authenticator"),
+                       cdef->name, np->data);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
+
 struct ConfigDef NntpVars[] = {
   // clang-format off
   { "catchup_newsgroup", DT_QUAD, &C_CatchupNewsgroup, MUTT_ASKYES, 0, NULL,
@@ -78,7 +105,7 @@ struct ConfigDef NntpVars[] = {
   { "news_server", DT_STRING, &C_NewsServer, 0, 0, NULL,
     "(nntp) Url of the news server"
   },
-  { "nntp_authenticators", DT_STRING, &C_NntpAuthenticators, 0, 0, NULL,
+  { "nntp_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_NntpAuthenticators, 0, 0, nntp_auth_validator,
     "(nntp) Allowed authentication methods"
   },
   { "nntp_context", DT_NUMBER|DT_NOT_NEGATIVE, &C_NntpContext, 1000, 0, NULL,
