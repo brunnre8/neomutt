@@ -24,6 +24,6 @@ void test_email_header_set(void)
     /* Update value */
     struct ListNode *got = header_set(&hdrlist, updated_value);
     TEST_CHECK(strcmp(got->data, updated_value) == 0); /* value set*/
-    TEST_CHECK(got == STAILQ_FIRST(&hdrlist)); /* no new header added*/
+    TEST_CHECK(got == STAILQ_FIRST(&hdrlist));         /* no new header added*/
   }
 }
