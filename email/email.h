@@ -156,9 +156,9 @@ struct EventEmail
  */
 enum NotifyHeader
 {
-  NT_HEADER_ADD = 1,
-  NT_HEADER_CHANGE,
-  NT_HEADER_REMOVE,
+  NT_HEADER_ADD = 1,  ///< A new header has been added
+  NT_HEADER_CHANGE,   ///< An existing header has been changed
+  NT_HEADER_REMOVE,   ///< A header is about to be removed
 };
 
 /**
