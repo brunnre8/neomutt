@@ -184,13 +184,13 @@ struct ListNode *header_find(const struct ListHead *hdrlist, const char *header)
 /**
  * header_add - Add a header to a list
  * @param hdrlist List of headers to search
- * @param buf     Buffer whose data to use to set the value of the header
+ * @param header  String to set as the header
  * @retval node   The created header
  */
-struct ListNode *header_add(struct ListHead *hdrlist, const struct Buffer *buf)
+struct ListNode *header_add(struct ListHead *hdrlist, const char *header)
 {
   struct ListNode *n = mutt_list_insert_tail(hdrlist, NULL);
-  n->data = mutt_buffer_strdup(buf);
+  n->data = mutt_str_dup(header);
 
   return n;
 }
@@ -198,13 +198,13 @@ struct ListNode *header_add(struct ListHead *hdrlist, const struct Buffer *buf)
 /**
  * header_update - Update an existing header
  * @param hdr     The header to update
- * @param buf     Buffer whose data to use to update the value of the header
+ * @param header  String to update the header with
  * @retval node   The updated header
  */
-struct ListNode *header_update(struct ListNode *hdr, const struct Buffer *buf)
+struct ListNode *header_update(struct ListNode *hdr, const char *header)
 {
   FREE(&hdr->data);
-  hdr->data = mutt_buffer_strdup(buf);
+  hdr->data = mutt_str_dup(header);
 
   return hdr;
 }
@@ -212,12 +212,12 @@ struct ListNode *header_update(struct ListNode *hdr, const struct Buffer *buf)
 /**
  * header_set - Set a header value in a list. If a header exists with the same field, update it, otherwise add a new header
  * @param hdrlist List of headers to search
- * @param buf     Buffer whose data to use to set the value of the header
+ * @param Header  String to set the value of the header to
  * @retval node   The updated or created header
  */
-struct ListNode *header_set(struct ListHead *hdrlist, const struct Buffer *buf)
+struct ListNode *header_set(struct ListHead *hdrlist, const char *header)
 {
-  struct ListNode *n = header_find(hdrlist, buf->data);
+  struct ListNode *n = header_find(hdrlist, header);
 
-  return n == NULL ? header_add(hdrlist, buf) : header_update(n, buf);
+  return n == NULL ? header_add(hdrlist, header) : header_update(n, header);
 }

@@ -11,12 +11,10 @@ void test_email_header_add(void)
   const char *header = "X-TestHeader: 123";
 
   struct ListHead hdrlist = STAILQ_HEAD_INITIALIZER(hdrlist);
-  struct Buffer buf = { 0 };
-  mutt_buffer_strcpy(&buf, header);
 
   {
-    struct ListNode *n = header_add(&hdrlist, &buf);
-    TEST_CHECK(strcmp(n->data, buf.data) == 0); /* header stored in node */
-    TEST_CHECK(n == header_find(&hdrlist, buf.data)); /* node added to list */
+    struct ListNode *n = header_add(&hdrlist, header);
+    TEST_CHECK(strcmp(n->data, header) == 0); /* header stored in node */
+    TEST_CHECK(n == header_find(&hdrlist, header)); /* node added to list */
   }
 }

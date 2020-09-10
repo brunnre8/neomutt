@@ -12,22 +12,18 @@ void test_email_header_set(void)
   const char *updated_value = "X-TestHeader: 6.28";
 
   struct ListHead hdrlist = STAILQ_HEAD_INITIALIZER(hdrlist);
-  struct Buffer starting_buf = { 0 };
-  mutt_buffer_strcpy(&starting_buf, starting_value);
-  struct Buffer updated_buf = { 0 };
-  mutt_buffer_strcpy(&updated_buf, updated_value);
 
   {
     /* Set value for first time */
-    struct ListNode *got = header_set(&hdrlist, &starting_buf);
-    TEST_CHECK(strcmp(got->data, starting_buf.data) == 0); /* value set */
+    struct ListNode *got = header_set(&hdrlist, starting_value);
+    TEST_CHECK(strcmp(got->data, starting_value) == 0); /* value set */
     TEST_CHECK(got == STAILQ_FIRST(&hdrlist)); /* header was added to list */
   }
 
   {
     /* Update value */
-    struct ListNode *got = header_set(&hdrlist, &updated_buf);
-    TEST_CHECK(strcmp(got->data, updated_buf.data) == 0); /* value set*/
+    struct ListNode *got = header_set(&hdrlist, updated_value);
+    TEST_CHECK(strcmp(got->data, updated_value) == 0); /* value set*/
     TEST_CHECK(got == STAILQ_FIRST(&hdrlist)); /* no new header added*/
   }
 }
