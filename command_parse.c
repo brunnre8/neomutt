@@ -1014,15 +1014,15 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   struct EventHeader event = { buf->data };
   struct ListNode *n = header_find(&UserHeader, buf->data);
 
-  if (!n)
-  {
-    header_add(&UserHeader, buf->data);
-    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_ADD, &event);
-  }
-  else
+  if (n)
   {
     header_update(n, buf->data);
     notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_CHANGE, &event);
+  }
+  else
+  {
+    header_add(&UserHeader, buf->data);
+    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_ADD, &event);
   }
 
   return MUTT_CMD_SUCCESS;
