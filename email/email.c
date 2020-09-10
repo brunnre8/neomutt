@@ -161,13 +161,13 @@ int emaillist_add_email(struct EmailList *el, struct Email *e)
 }
 
 /**
- * find_header - Find a header, matching on its field, in a list of headers
+ * header_find - Find a header, matching on its field, in a list of headers
  * @param hdrlist List of headers to search
  * @param header  The header to search for. Either of the form "X-Header:" or "X-Header: value"
  * @retval node   The node in the list matching the header
  * @retval NULL   If no matching header is found
  */
-struct ListNode *find_header(const struct ListHead *hdrlist, const char *header)
+struct ListNode *header_find(const struct ListHead *hdrlist, const char *header)
 {
   struct ListNode *n = NULL;
 
@@ -182,12 +182,12 @@ struct ListNode *find_header(const struct ListHead *hdrlist, const char *header)
 }
 
 /**
- * add_header - Add a header to a list
+ * header_add - Add a header to a list
  * @param hdrlist List of headers to search
  * @param buf     Buffer whose data to use to set the value of the header
  * @retval node   The created header
  */
-struct ListNode *add_header(struct ListHead *hdrlist, const struct Buffer *buf)
+struct ListNode *header_add(struct ListHead *hdrlist, const struct Buffer *buf)
 {
   struct ListNode *n = mutt_list_insert_tail(hdrlist, NULL);
   n->data = mutt_buffer_strdup(buf);
@@ -196,12 +196,12 @@ struct ListNode *add_header(struct ListHead *hdrlist, const struct Buffer *buf)
 }
 
 /**
- * update_header - Update an existing header
+ * header_update - Update an existing header
  * @param hdr     The header to update
  * @param buf     Buffer whose data to use to update the value of the header
  * @retval node   The updated header
  */
-struct ListNode *update_header(struct ListNode *hdr, const struct Buffer *buf)
+struct ListNode *header_update(struct ListNode *hdr, const struct Buffer *buf)
 {
   FREE(&hdr->data);
   hdr->data = mutt_buffer_strdup(buf);
@@ -210,14 +210,14 @@ struct ListNode *update_header(struct ListNode *hdr, const struct Buffer *buf)
 }
 
 /**
- * set_header - Set a header value in a list. If a header exists with the same field, update it, otherwise add a new header
+ * header_set - Set a header value in a list. If a header exists with the same field, update it, otherwise add a new header
  * @param hdrlist List of headers to search
  * @param buf     Buffer whose data to use to set the value of the header
  * @retval node   The updated or created header
  */
-struct ListNode *set_header(struct ListHead *hdrlist, const struct Buffer *buf)
+struct ListNode *header_set(struct ListHead *hdrlist, const struct Buffer *buf)
 {
-  struct ListNode *n = find_header(hdrlist, buf->data);
+  struct ListNode *n = header_find(hdrlist, buf->data);
 
-  return n == NULL ? add_header(hdrlist, buf) : update_header(n, buf);
+  return n == NULL ? header_add(hdrlist, buf) : header_update(n, buf);
 }

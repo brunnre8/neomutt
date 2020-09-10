@@ -5,9 +5,9 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 
-void test_email_set_header(void)
+void test_email_header_set(void)
 {
-  // struct ListNode *set_header(struct ListHead *hdrlist, const struct Buffer *buf)
+  // struct ListNode *header_set(struct ListHead *hdrlist, const struct Buffer *buf)
   const char *starting_value = "X-TestHeader: 0.57";
   const char *updated_value = "X-TestHeader: 6.28";
 
@@ -19,14 +19,14 @@ void test_email_set_header(void)
 
   {
     /* Set value for first time */
-    struct ListNode *got = set_header(&hdrlist, &starting_buf);
+    struct ListNode *got = header_set(&hdrlist, &starting_buf);
     TEST_CHECK(strcmp(got->data, starting_buf.data) == 0); /* value set */
     TEST_CHECK(got == STAILQ_FIRST(&hdrlist)); /* header was added to list */
   }
 
   {
     /* Update value */
-    struct ListNode *got = set_header(&hdrlist, &updated_buf);
+    struct ListNode *got = header_set(&hdrlist, &updated_buf);
     TEST_CHECK(strcmp(got->data, updated_buf.data) == 0); /* value set*/
     TEST_CHECK(got == STAILQ_FIRST(&hdrlist)); /* no new header added*/
   }

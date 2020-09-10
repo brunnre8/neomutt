@@ -4,9 +4,9 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 
-void test_email_find_header(void)
+void test_email_header_find(void)
 {
-  // struct ListNode *find_header(struct ListHead *hdrlist, const char *header)
+  // struct ListNode *header_find(struct ListHead *hdrlist, const char *header)
   char *header = "X-TestHeader: 123";
 
   struct ListHead hdrlist = STAILQ_HEAD_INITIALIZER(hdrlist);
@@ -15,23 +15,23 @@ void test_email_find_header(void)
   STAILQ_INSERT_TAIL(&hdrlist, n, entries);
 
   {
-    struct ListNode *found = find_header(&hdrlist, header);
+    struct ListNode *found = header_find(&hdrlist, header);
     TEST_CHECK(found == n);
   }
 
   {
     const char *not_found = "X-NotIncluded: foo";
-    struct ListNode *found = find_header(&hdrlist, not_found);
+    struct ListNode *found = header_find(&hdrlist, not_found);
     TEST_CHECK(found == NULL);
   }
 
   {
     const char *field_only = "X-TestHeader:";
-    TEST_CHECK(find_header(&hdrlist, field_only) == n);
+    TEST_CHECK(header_find(&hdrlist, field_only) == n);
   }
 
   {
     const char *invalid_header = "Not a header";
-    TEST_CHECK(find_header(&hdrlist, invalid_header) == NULL);
+    TEST_CHECK(header_find(&hdrlist, invalid_header) == NULL);
   }
 }

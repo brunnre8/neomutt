@@ -5,9 +5,9 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 
-void test_email_add_header(void)
+void test_email_header_add(void)
 {
-  // struct ListNode *add_header(struct ListHead *hdrlist, const struct Buffer *buf)
+  // struct ListNode *header_add(struct ListHead *hdrlist, const struct Buffer *buf)
   const char *header = "X-TestHeader: 123";
 
   struct ListHead hdrlist = STAILQ_HEAD_INITIALIZER(hdrlist);
@@ -15,8 +15,8 @@ void test_email_add_header(void)
   mutt_buffer_strcpy(&buf, header);
 
   {
-    struct ListNode *n = add_header(&hdrlist, &buf);
+    struct ListNode *n = header_add(&hdrlist, &buf);
     TEST_CHECK(strcmp(n->data, buf.data) == 0); /* header stored in node */
-    TEST_CHECK(n == find_header(&hdrlist, buf.data)); /* node added to list */
+    TEST_CHECK(n == header_find(&hdrlist, buf.data)); /* node added to list */
   }
 }

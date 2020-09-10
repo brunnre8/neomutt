@@ -5,9 +5,9 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 
-void test_email_update_header(void)
+void test_email_header_update(void)
 {
-  // struct ListNode *update_header(sturct ListNode *hdr, const struct Buffer *buf)
+  // struct ListNode *header_update(sturct ListNode *hdr, const struct Buffer *buf)
   const char *existing_header = "X-Found: foo";
   const char *new_value = "X-Found: 3.14";
 
@@ -17,7 +17,7 @@ void test_email_update_header(void)
   mutt_buffer_strcpy(&buf, new_value);
 
   {
-    struct ListNode *got = update_header(n, &buf);
+    struct ListNode *got = header_update(n, &buf);
     TEST_CHECK(got == n);                          /* returns updated node */
     TEST_CHECK(strcmp(got->data, new_value) == 0); /* node updated to new value */
   }
