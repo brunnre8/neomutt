@@ -162,7 +162,7 @@ enum NotifyHeader
 };
 
 /**
- * struct EventHeader - An event that happened to an email
+ * struct EventHeader - An event that happened to a header
  */
 struct EventHeader
 {
