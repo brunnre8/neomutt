@@ -166,7 +166,7 @@ enum NotifyHeader
  */
 struct EventHeader
 {
-  struct Buffer *buf; ///< Buffer containing the entire header
+  char *header; ///< The contents of the header
 };
 
 bool          email_cmp_strict(const struct Email *e1, const struct Email *e2);
