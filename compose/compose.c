@@ -1405,7 +1405,7 @@ static int compose_header_observer(struct NotifyCallback *nc)
 
   if ((nc->event_subtype == NT_HEADER_ADD) || (nc->event_subtype == NT_HEADER_CHANGE))
   {
-    set_header(&env->userhdrs, event->buf);
+    header_set(&env->userhdrs, event->header);
     mutt_window_reflow(dlg);
     return 0;
   }
